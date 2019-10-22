@@ -1,7 +1,7 @@
 const http = require('http');
 const app = require('express')();
 const server = http.createServer(app);
-const middlewares = require('./middleware');
+const middlewares = require('./middlewares');
 const routes = require('./routes');
 
 const databaseConfig = require('./config/db');
@@ -20,10 +20,12 @@ app.use((error, req, res, next) => {
     res.status(error.status || 500).send({msg: error.message})
 })
 
-server.listen(port, () => {
+server.listen(port);
+
+server.on('listening', () => { 
     console.log(`:: server listening on port ${port}`);
     databaseConfig();
-});
+ });
 
-// server.on('error', (error) => { console.log(`:: error: ${error}`); });
+server.on('error', (error) => { console.log(`:: error: ${error}`); });
 
