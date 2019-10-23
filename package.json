@@ -19,5 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.0",
     "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "bcryptjs": "^2.4.3"
   }
 }
