@@ -30,7 +30,7 @@ class UserContoller {
 
   async getUsers(req, res, next) {
     try {
-      users = await getUsers();
+      const users = await getUsers();
       res.status(200).send(response("All users", users));
     } catch (error) {
       next(error);
@@ -39,7 +39,7 @@ class UserContoller {
 
   async getUser(req, res, next) {
     try {
-      user = await getUser(req.params.userId);
+      const user = await getUser(req.params.userId);
       res.status(200).send(response("User detail", user));
     } catch (error) {
       next(error);
@@ -48,8 +48,8 @@ class UserContoller {
 
   async editUser(req, res, next) {
     try {
-      user = await editUser(req.params.userId, data);
-      res.status(200).send(response("Profile edited"));
+      const user = await editUser(req.params.userId, req.body);
+      res.status(200).send(response("Profile edited", user));
     } catch (error) {
       next(error);
     }
@@ -57,8 +57,8 @@ class UserContoller {
 
   async deleteUser(req, res, next) {
     try {
-      user = await deleteUser(req.params.userId);
-      res.status(200).send(response("User deleted"));
+      const user = await deleteUser(req.params.userId);
+      res.status(200).send(response("User deleted", user));
     } catch (error) {
       next(error);
     }

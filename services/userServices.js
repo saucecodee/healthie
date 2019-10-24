@@ -1,5 +1,4 @@
 const User = require("../models/user");
-const { response } = require("../config/messages");
 
 class UsersService {
   async signupUser(data) {
@@ -20,16 +19,18 @@ class UsersService {
     return await User.find({});
   }
 
-  async getUser(_id) {
-    await User.findOne({ _id });
+  async getUser(userId) {
+    const user = await User.findOne({ _id: userId });
+
+    return user
   }
 
-  async editUser(_id, data) {
-    return await User.findByIdAndUpdate({ _id }, data);
+  async editUser(userId, data) {
+    return await User.findByIdAndUpdate({ _id: userId }, data, { new: true });
   }
 
-    async deleteUser(_id) {
-      return await User.findOneAndRemove({_id})
+  async deleteUser(userId) {
+    return await User.findOneAndRemove({ _id: userId })
   }
 }
 module.exports = new UsersService();

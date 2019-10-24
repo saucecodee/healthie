@@ -1,5 +1,4 @@
 const Doctor = require('../models/doctors');
-const { response } = require('../config/messages');
 
 class DoctorsService {
   async signupDoctor(data) {
@@ -7,7 +6,7 @@ class DoctorsService {
     await doctor.save();
   }
 
-  async signupDoctor({ email, password }) {
+  async signinDoctor({ email, password }) {
     const user = await Doctor.findOne({ email });
 
     if (user.password != password) {
@@ -25,15 +24,21 @@ class DoctorsService {
   }
 
   async getDoctors() {
-    return (await Doctor.find({})).map(doctor => doctor.toObject);
+    const doctors = await Doctor.find({})
+
+    return doctors;
   }
 
   async editDoctor(_id, data) {
-    return await Doctor.findOneAndUpdate({ _id }, data);
+    const doctor = await Doctor.findOneAndUpdate({ _id }, data, { new: true });
+
+    return doctor
   }
 
   async deleteDoctor(_id) {
-    return await Doctor.findOneAndRemove({ _id });
+    const doctor = await Doctor.findOneAndRemove({ _id });
+
+    return doctor
   }
 }
 

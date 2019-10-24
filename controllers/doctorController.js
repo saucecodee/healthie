@@ -5,7 +5,7 @@ const {
   getDoctors,
   editDoctor,
   deleteDoctor,
-} = require('../services/doctorServices.js/index.js');
+} = require('../services/doctorServices');
 const { response } = require('../config/messages');
 
 class DoctorContoller {
@@ -20,8 +20,8 @@ class DoctorContoller {
 
   async signinDoctor(req, res, next) {
     try {
-      await signinDoctor(req.body);
-      res.status(200).send(response('Signin successful.'));
+      const doctor = await signinDoctor(req.body);
+      res.status(200).send(response('Signin successful.', doctor));
     } catch (error) {
       next(error);
     }
@@ -39,7 +39,7 @@ class DoctorContoller {
   async getDoctors(req, res, next) {
     try {
       let data = await getDoctors();
-      res.status(200).send(response('Found', data));
+      res.status(200).send(response('Found ff', data));
     } catch (error) {
       next(error);
     }
@@ -47,7 +47,7 @@ class DoctorContoller {
 
   async editDoctor(req, res, next) {
     try {
-      let data = await editDoctor(req.params.doctorId, data);
+      let data = await editDoctor(req.params.doctorId, req.body);
       res.status(200).send(response('Doctor edited', data));
     } catch (error) {
       next(error);

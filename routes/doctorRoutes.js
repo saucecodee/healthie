@@ -11,9 +11,10 @@ const {
 module.exports = function() {
   router.post('/signup', signupDoctor);
   router.post('/signin', signinDoctor);
-  router.get('/:doctorId', getDoctor);
   router.get('/', getDoctors);
+  router.get('/:doctorId', getDoctor);
   router.put('/:doctorId', editDoctor);
   router.delete('/:doctorId', deleteDoctor);
+  
   return router;
 };

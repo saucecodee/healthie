@@ -11,9 +11,10 @@ const {
 module.exports = function() {
   router.post("/signup", signupUser);
   router.post("/signin", signinUser);
-  router.get("/:userid,", getUser);
   router.get("/", getUsers);
-  router.put("/:userid", editUser);
-  router.delete("/:userid", deleteUser);
+  router.get("/:userId", getUser);
+  router.put("/:userId", editUser);
+  router.delete("/:userId", deleteUser);
+  
   return router;
 };

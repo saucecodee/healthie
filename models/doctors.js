@@ -42,20 +42,23 @@ const DoctorSchema = new Schema({
   },
   dateCreated: {
     type: Date,
-    default: new Date(),
+    default: Date.now(),
   },
   licenceID: {
     type: String,
     required: true,
     unique: true,
   },
-  bio: String,
+  bio: {
+    type:String,
+    default: null,
+  },
   appointments: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Appointment',
-    },
-  ],
+    }
+  ]
 });
 
 module.exports = mongoose.model('Doctors', DoctorSchema);
