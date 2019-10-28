@@ -8,60 +8,38 @@ const {
 } = require("../services/userServices");
 
 const { response } = require("../config/messages");
+const { NotFound, Unauthorized } = require('../config/errors')
 
 class UserContoller {
   async signupUser(req, res, next) {
-    try {
-      await signupUser(req.body);
-      res.status(201).send(response("Account created"));
-    } catch (error) {
-      next(error);
-    }
+    const token = await signupUser(req.body);
+    res.status(201).send(response("Account created", token));
   }
 
   async signinUser(req, res, next) {
-    try {
-      await signinUser(req.body);
-      res.status(200).send(response("User signed in"));
-    } catch (error) {
-      next(error);
-    }
+    const token = await signinUser(req.body);
+    res.status(200).send(response("User signed in", token));
   }
 
   async getUsers(req, res, next) {
-    try {
-      const users = await getUsers();
-      res.status(200).send(response("All users", users));
-    } catch (error) {
-      next(error);
-    }
+    const users = await getUsers();
+    res.status(200).send(response("All users", users));
   }
 
   async getUser(req, res, next) {
-    try {
-      const user = await getUser(req.params.userId);
-      res.status(200).send(response("User detail", user));
-    } catch (error) {
-      next(error);
-    }
+    const user = await getUser(req.params.userId);
+    res.status(200).send(response("User detail", user));
   }
 
   async editUser(req, res, next) {
-    try {
-      const user = await editUser(req.params.userId, req.body);
-      res.status(200).send(response("Profile edited", user));
-    } catch (error) {
-      next(error);
-    }
+    const user = await editUser(req.params.userId, req.body);
+    if (req.params.userId != req.headers.user.id) throw new Unauthorized("Invalid user")
+    res.status(200).send(response("Profile edited", user));
   }
 
   async deleteUser(req, res, next) {
-    try {
-      const user = await deleteUser(req.params.userId);
-      res.status(200).send(response("User deleted", user));
-    } catch (error) {
-      next(error);
-    }
+    const user = await deleteUser(req.params.userId);
+    res.status(200).send(response("User deleted", user));
   }
 }
 

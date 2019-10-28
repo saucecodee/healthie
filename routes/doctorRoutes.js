@@ -7,14 +7,15 @@ const {
   editDoctor,
   deleteDoctor,
 } = require('../controllers/doctorController');
+const { isDoctor } = require('../middleware/auth')
 
-module.exports = function() {
+module.exports = function () {
   router.post('/signup', signupDoctor);
   router.post('/signin', signinDoctor);
   router.get('/', getDoctors);
   router.get('/:doctorId', getDoctor);
-  router.put('/:doctorId', editDoctor);
-  router.delete('/:doctorId', deleteDoctor);
-  
+  router.put('/:doctorId', isDoctor, editDoctor);
+  router.delete('/:doctorId', isDoctor, deleteDoctor);
+
   return router;
 };

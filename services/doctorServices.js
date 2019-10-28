@@ -1,4 +1,4 @@
-const Doctor = require('../models/doctors');
+const Doctor = require('../models/doctor');
 
 class DoctorsService {
   async signupDoctor(data) {
