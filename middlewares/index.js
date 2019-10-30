@@ -12,7 +12,7 @@ module.exports = (app) => {
      app.use((req, res, next) => {
           res.header("Access-Control-Allow-Origin", "*")
           res.header("Access-Control-Allow-Headers", "*")
-          if(req.method == 'OPTIONS'){
+          if (req.method == 'OPTIONS') {
                res.header("Access-Control-Allow-Methods", "PUT, DELETE, PATCH, POST, GET")
                return res.status(200).send({})
           }

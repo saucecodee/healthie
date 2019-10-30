@@ -5,19 +5,19 @@ const AppointmentSchema = new Schema(
      {
           doctor: {
                type: mongoose.Schema.Types.ObjectId,
-               required: true
+               required: [true, "doctor's id is required"]
           },
           user: {
                type: mongoose.Schema.Types.ObjectId,
-               required: true
+               required: [true, "user's id is required"]
           },
           duration: {
                type: Number,
-               required: true
+               required: [true, "Duration is required"]
           },
           location: {
                type: String,
-               required: true
+               required: [true, "Location is required"]
           },
           status: {
                type: String,

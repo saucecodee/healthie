@@ -6,7 +6,7 @@ const {
   editDoctor,
   deleteDoctor,
 } = require('../services/doctorServices');
-const { response } = require('../config/messages');
+const { response } = require('../helpers/messages');
 
 class DoctorContoller {
   async signupDoctor(req, res, next) {
@@ -26,7 +26,7 @@ class DoctorContoller {
 
   async getDoctors(req, res, next) {
     let data = await getDoctors();
-    res.status(200).send(response('Found ff', data));
+    res.status(200).send(response('All Doctors', data));
   }
 
   async editDoctor(req, res, next) {

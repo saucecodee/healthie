@@ -1,7 +1,11 @@
 const Doctor = require('../models/doctor');
+const CustomError = require("../helpers/CustomError");
 
 class DoctorsService {
   async signupDoctor(data) {
+    if (await Doctor.findOne({ email: data.email })) throw new CustomError("email already exists");
+    if (await Doctor.findOne({ phone: data.phone })) throw new CustomError("phone number already exists");
+    if (await Doctor.findOne({ licenceID: data.licenceID })) throw new CustomError("licence id already exists");
     const doctor = new Doctor(data);
     await doctor.save();
   }

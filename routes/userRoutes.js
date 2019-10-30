@@ -7,7 +7,7 @@ const {
   deleteUser,
   editUser,
 } = require("../controllers/userController");
-const { isUser } = require('../middleware/auth')
+const { isUser } = require('../middlewares/auth')
 
 module.exports = function () {
   router.post("/signup", signupUser);

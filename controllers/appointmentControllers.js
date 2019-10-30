@@ -1,5 +1,5 @@
 const { bookAppointment, getAppointments, getOneAppointment, cancelAppointment, approveAppointment, acceptAppointment } = require('../services/appointmentServices')
-const { response } = require('../config/messages')
+const { response } = require('../helpers/messages')
 
 class AppointmentContoller {
 

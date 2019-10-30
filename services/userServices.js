@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require("../models/user");
-const { NotFound, Unauthorized } = require('../config/errors')
+const CustomError = require("../helpers/CustomError");
 
 class UsersService {
 
   async signupUser(data) {
-    data.password = await bcrypt.hash(data.password, 10)
+    if (await User.findOne({ email: data.email })) throw new CustomError("email already exists");
+    if (await User.findOne({ phone: data.phone })) throw new CustomError("phone number already exists");
 
     const user = new User(data);
 
@@ -18,17 +19,20 @@ class UsersService {
   }
 
   async signinUser(data) {
+    if (!data.email) throw new CustomError("No email specified");
+    if (!data.password) throw new CustomError("No password");
+
     const user = await User.findOne({ email: data.email });
 
-    if(!user) throw new Unauthorized("Incorrect email or password")
+    if (!user) throw new CustomError("Incorrect email")
 
-    const isCorrect = await bcrypt.compare(data.password, user.password)
+    await bcrypt.compare(data.password, user.password)
 
-    if(!isCorrect) throw new Unauthorized("Incorrect email or password")
+    if (!isCorrect) throw new CustomError("Incorrect email or password")
 
     const token = await jwt.sign({ id: user._id, role: "user" }, 'healthie');
 
-    return token 
+    return token
   }
 
   async getUsers() {
@@ -42,10 +46,10 @@ class UsersService {
   }
 
   async editUser(userId, data) {
-    const user =  await User.findByIdAndUpdate({ _id: userId }, data, { new: true });
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, { new: true });
 
-    if(!user) throw new NotFound("User dosen't exist")
-    
+    if (!user) throw new CustomError("User dosen't exist", 404)
+
     return user
   }
 
