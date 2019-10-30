@@ -1,60 +1,61 @@
-const Appointment = require('../models/appointment');
-const { NotFound } = require('../config/errors')
+const Appointment = require("../models/appointment");
+const { NotFound } = require("../config/errors");
 
 class AppointmentService {
-     constructor(){
-          this.updateAppointment = this.updateAppointment.bind(this)
-          this.cancelAppointment = this.cancelAppointment.bind(this)
-          this.approveAppointment = this.approveAppointment.bind(this)
-          this.acceptAppointment = this.acceptAppointment.bind(this)
-     }
+  constructor() {
+    this.updateAppointment = this.updateAppointment.bind(this);
+    this.cancelAppointment = this.cancelAppointment.bind(this);
+    this.approveAppointment = this.approveAppointment.bind(this);
+    this.acceptAppointment = this.acceptAppointment.bind(this);
+  }
 
-     async bookAppointment(data) {
-          const appointment = new Appointment(data)
+  async bookAppointment(data) {
+    const appointment = new Appointment(data);
 
-          await appointment.save()
+    await appointment.save();
 
-          return appointment
-     }
+    return appointment;
+  }
 
-     async getAppointments() {
-          const appointments = await Appointment.find({})
+  async getAppointments() {
+    const appointments = await Appointment.find({});
 
-          if (!appointments) return null
+    if (!appointments) return null;
 
-          return appointments
-     }
+    return appointments;
+  }
 
-     async getOneAppointment(appointemntId) {
-          const appointment = await Appointment.findById({ _id: appointemntId })
+  async getOneAppointment(appointemntId) {
+    const appointment = await Appointment.findById({ _id: appointemntId });
 
-          if (!appointment) return null
+    if (!appointment) return null;
 
-          return appointment
-     }
+    return appointment;
+  }
 
-     async updateAppointment (appointemntId, data) {
-          const appointment = await Appointment.findOneAndUpdate(
-               { _id: appointemntId },
-               data,
-               { new: true })
+  async updateAppointment(appointemntId, data) {
+    const appointment = await Appointment.findOneAndUpdate(
+      { _id: appointemntId },
+      data,
+      { new: true }
+    );
 
-          if (!appointment) throw new NotFound("Appointment not found")
+    if (!appointment) throw new NotFound("Appointment not found");
 
-          return appointment
-     }
+    return appointment;
+  }
 
-     async cancelAppointment(appointmentId) {
-          return await this.updateAppointment(appointmentId, { status: 'canceled' })
-     }
+  async cancelAppointment(appointmentId) {
+    return await this.updateAppointment(appointmentId, { status: "canceled" });
+  }
 
-     async approveAppointment(appointmentId) {
-          return await this.updateAppointment(appointmentId, { status: 'approved' })
-     }
+  async approveAppointment(appointmentId) {
+    return await this.updateAppointment(appointmentId, { status: "approved" });
+  }
 
-     async acceptAppointment(appointmentId) {
-          return await this.updateAppointment(appointmentId, { status: 'accepted' })
-     }
+  async acceptAppointment(appointmentId) {
+    return await this.updateAppointment(appointmentId, { status: "accepted" });
+  }
 }
 
-module.exports = new AppointmentService()
+module.exports = new AppointmentService();
