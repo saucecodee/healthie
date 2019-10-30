@@ -1,60 +1,57 @@
-const Appointment = require("../models/appointment");
-const { NotFound } = require("../config/errors");
+const Appointment = require('../models/appointment');
+const CustomError = require("../helpers/CustomError");
 
 class AppointmentService {
   constructor() {
-    this.updateAppointment = this.updateAppointment.bind(this);
-    this.cancelAppointment = this.cancelAppointment.bind(this);
-    this.approveAppointment = this.approveAppointment.bind(this);
-    this.acceptAppointment = this.acceptAppointment.bind(this);
+    this.updateAppointment = this.updateAppointment.bind(this)
+    this.cancelAppointment = this.cancelAppointment.bind(this)
+    this.approveAppointment = this.approveAppointment.bind(this)
+    this.acceptAppointment = this.acceptAppointment.bind(this)
   }
 
   async bookAppointment(data) {
-    const appointment = new Appointment(data);
+    const appointment = new Appointment(data)
 
-    await appointment.save();
+    await appointment.save()
 
-    return appointment;
+    return appointment
   }
 
   async getAppointments() {
-    const appointments = await Appointment.find({});
+    const appointments = await Appointment.find({})
 
-    if (!appointments) return null;
-
-    return appointments;
+    return appointments
   }
 
   async getOneAppointment(appointemntId) {
-    const appointment = await Appointment.findById({ _id: appointemntId });
+    const appointment = await Appointment.findById({ _id: appointemntId })
 
-    if (!appointment) return null;
+    if (!appointment) throw new CustomError("Appointment not found", 404)
 
-    return appointment;
+    return appointment
   }
 
   async updateAppointment(appointemntId, data) {
     const appointment = await Appointment.findOneAndUpdate(
       { _id: appointemntId },
       data,
-      { new: true }
-    );
+      { new: true })
 
-    if (!appointment) throw new NotFound("Appointment not found");
+    if (!appointment) throw new CustomError("Appointment not found", 404)
 
-    return appointment;
+    return appointment
   }
 
   async cancelAppointment(appointmentId) {
-    return await this.updateAppointment(appointmentId, { status: "canceled" });
+    return await this.updateAppointment(appointmentId, { status: 'canceled' })
   }
 
   async approveAppointment(appointmentId) {
-    return await this.updateAppointment(appointmentId, { status: "approved" });
+    return await this.updateAppointment(appointmentId, { status: 'approved' })
   }
 
   async acceptAppointment(appointmentId) {
-    return await this.updateAppointment(appointmentId, { status: "accepted" });
+    return await this.updateAppointment(appointmentId, { status: 'accepted' })
   }
 }
 

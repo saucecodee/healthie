@@ -7,8 +7,8 @@ const {
   editUser,
 } = require("../services/userServices");
 
-const { response } = require("../config/messages");
-const { NotFound, Unauthorized } = require('../config/errors')
+const { response } = require("../helpers/messages");
+const CustomError = require('../helpers/CustomError')
 
 class UserContoller {
   async signupUser(req, res, next) {
@@ -33,7 +33,7 @@ class UserContoller {
 
   async editUser(req, res, next) {
     const user = await editUser(req.params.userId, req.body);
-    if (req.params.userId != req.headers.user.id) throw new Unauthorized("Invalid user")
+    if (req.params.userId != req.headers.user.id) throw new CustomError("Invalid user", 401)
     res.status(200).send(response("Profile edited", user));
   }
 
