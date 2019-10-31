@@ -6,13 +6,16 @@ class SymptomServices {
     await symptom.save();
     return symptom;
   }
-  async getSymptom() {
-    return await Symptom.find({});
+  async getSymptoms(page, limit) {
+    return await Symptom.find()
+      .skip((page - 1) * limit)
+      .limit(limit);
   }
 
-  async getSymptoms(symptomId) {
+  async getSymptom(symptomId) {
     const symptom = await Symptom.findOne({ _id: symptomId });
     if (!symptom) throw new customError("Symptom not found");
+
     return symptom;
   }
 
