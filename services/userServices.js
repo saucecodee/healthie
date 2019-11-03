@@ -26,7 +26,7 @@ class UsersService {
 
     if (!user) throw new CustomError("Incorrect email")
 
-    await bcrypt.compare(data.password, user.password)
+    const isCorrect = await bcrypt.compare(data.password, user.password)
 
     if (!isCorrect) throw new CustomError("Incorrect email or password")
 
