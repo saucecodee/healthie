@@ -1,21 +1,22 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const CustomError = require("../helpers/CustomError");
 
 class UsersService {
-
   async signupUser(data) {
-    if (await User.findOne({ email: data.email })) throw new CustomError("email already exists");
-    if (await User.findOne({ phone: data.phone })) throw new CustomError("phone number already exists");
+    if (await User.findOne({ email: data.email }))
+      throw new CustomError("email already exists");
+    if (await User.findOne({ phone: data.phone }))
+      throw new CustomError("phone number already exists");
 
     const user = new User(data);
 
-    const token = await jwt.sign({ id: user._id, role: "user" }, 'healthie');
+    const token = await jwt.sign({ id: user._id, role: "user" }, "healthie");
 
     await user.save();
 
-    return token
+    return token;
   }
 
   async signinUser(data) {
@@ -24,15 +25,15 @@ class UsersService {
 
     const user = await User.findOne({ email: data.email });
 
-    if (!user) throw new CustomError("Incorrect email")
-
+    if (!user) throw new CustomError("Incorrect email");
+    
     const isCorrect = await bcrypt.compare(data.password, user.password)
 
-    if (!isCorrect) throw new CustomError("Incorrect email or password")
+    if (!isCorrect) throw new CustomError("Incorrect email or password");
 
-    const token = await jwt.sign({ id: user._id, role: "user" }, 'healthie');
+    const token = await jwt.sign({ id: user._id, role: "user" }, "healthie");
 
-    return token
+    return token;
   }
 
   async getUsers() {
@@ -42,19 +43,21 @@ class UsersService {
   async getUser(userId) {
     const user = await User.findOne({ _id: userId });
 
-    return user
+    return user;
   }
 
   async editUser(userId, data) {
-    const user = await User.findByIdAndUpdate({ _id: userId }, data, { new: true });
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      new: true,
+    });
 
-    if (!user) throw new CustomError("User dosen't exist", 404)
+    if (!user) throw new CustomError("User dosen't exist", 404);
 
-    return user
+    return user;
   }
 
   async deleteUser(userId) {
-    return await User.findOneAndRemove({ _id: userId })
+    return await User.findOneAndRemove({ _id: userId });
   }
 }
 module.exports = new UsersService();
