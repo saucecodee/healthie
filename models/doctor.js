@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 
 const DoctorSchema = new Schema(
   {
@@ -25,17 +25,12 @@ const DoctorSchema = new Schema(
       required: [true, "address is required"],
     },
     specialty: {
-      id: {
-        type: Schema.Types.ObjectId,
-        ref: "Specialization",
-      },
-      name: {
-        type: String
-      }
+      type: String,
+      required: [true, "field specialty is required"],
     },
     imgUrl: {
       type: String,
-      default: "/uploads/defaultImg.png",
+      default: '/uploads/defaultImg.png',
     },
     isActive: {
       type: Boolean,
@@ -56,24 +51,23 @@ const DoctorSchema = new Schema(
     appointments: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Appointment",
-      },
-    ],
+        ref: 'Appointment',
+      }
+    ]
   },
   {
-    timestamps: true,
-  }
-);
+    timestamps: true
+  });
 
-DoctorSchema.pre("save", async function(next) {
+DoctorSchema.pre("save", async function (next) {
   try {
     const saltRounds = 10;
     let hash = await bcrypt.hash(this.password, saltRounds);
     this.password = hash;
   } catch (error) {
-    next(err);
+    next(err)
   }
   next();
 });
 
-module.exports = mongoose.model("Doctors", DoctorSchema);
+module.exports = mongoose.model('Doctors', DoctorSchema);
