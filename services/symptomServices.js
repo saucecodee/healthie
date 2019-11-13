@@ -24,4 +24,4 @@ class SymptomServices {
   }
 }
 
-module.exports = SymptomServices;
+module.exports = new SymptomServices();

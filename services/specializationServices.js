@@ -26,4 +26,4 @@ class specializationServices {
   }
 }
 
-module.exports = specializationServices;
+module.exports = new specializationServices();

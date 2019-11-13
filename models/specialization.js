@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const SpecializationSchema = new Schema({
   name: {
-    type: string,
+    type: String,
     required: true,
   },
 });
