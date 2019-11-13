@@ -33,4 +33,4 @@ class symptomController {
   }
 }
 
-module.exports = symptomController;
+module.exports = new symptomController();

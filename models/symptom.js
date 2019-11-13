@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const SymptomSchema = new Schema({
   name: {
-    type: string,
+    type: String,
     required: true,
   },
   imgUrl: {
