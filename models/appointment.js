@@ -12,8 +12,7 @@ const AppointmentSchema = new Schema(
                required: [true, "user's id is required"]
           },
           duration: {
-               type: Number,
-               required: [true, "Duration is required"]
+               type: Number
           },
           location: {
                type: String,
