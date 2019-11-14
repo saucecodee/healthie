@@ -3,6 +3,7 @@ const {
   signinUser,
   getUsers,
   getUser,
+  getUserAppointments,
   deleteUser,
   editUser,
 } = require("../services/userServices");
@@ -29,6 +30,11 @@ class UserContoller {
   async getUser(req, res, next) {
     const user = await getUser(req.params.userId);
     res.status(200).send(response("User detail", user));
+  }
+
+  async getUserAppointments(req, res, next) {
+    const userAppointments = await getUserAppointments(req.params.userId);
+    res.status(200).send(response(`User's appointments`, userAppointments));
   }
 
   async editUser(req, res, next) {

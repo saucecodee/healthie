@@ -46,6 +46,11 @@ class UsersService {
     return user;
   }
 
+  async getUserAppointments(userId) {
+    const user = await User.findOne({ _id: userId }).populate("appointments");
+    return user.appointments;
+  }
+
   async editUser(userId, data) {
     const user = await User.findByIdAndUpdate({ _id: userId }, data, {
       new: true,
