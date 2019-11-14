@@ -30,7 +30,7 @@ class DoctorsService {
     return doctor;
   }
 
-  async getDoctors() {
+  async getDoctors({ q, c, page, limit }) {
     page = page || 1;
     limit = limit || 20;
     limit = limit > 100 ? 100 : limit;
