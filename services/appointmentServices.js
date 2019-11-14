@@ -1,5 +1,7 @@
 const Appointment = require('../models/appointment');
 const CustomError = require("../helpers/CustomError");
+const Doctor = require("../models/doctor");
+const User = require("../models/user");
 
 class AppointmentService {
   constructor() {
@@ -13,6 +15,16 @@ class AppointmentService {
     const appointment = new Appointment(data)
 
     await appointment.save()
+
+    //Adding appointment id to user's appointments array
+    let user = await User.findOne({ _id: data.user })
+    user.appointments.push(appointment._id);
+    await User.findOneAndUpdate({ _id: user._id }, user);
+
+    //Adding appointment id to doctor's appointments array
+    let doctor = await Doctor.findOne({ _id: data.doctor })
+    doctor.appointments.push(appointment._id);
+    await Doctor.findOneAndUpdate({ _id: doctor._id }, doctor);
 
     return appointment
   }
