@@ -26,14 +26,14 @@ class UsersService {
     const user = await User.findOne({ email: data.email });
 
     if (!user) throw new CustomError("Incorrect email");
-    
+
     const isCorrect = await bcrypt.compare(data.password, user.password)
 
     if (!isCorrect) throw new CustomError("Incorrect email or password");
 
     const token = await jwt.sign({ id: user._id, role: "user" }, "healthie");
 
-    return token;
+    return { token, user };
   }
 
   async getUsers() {
