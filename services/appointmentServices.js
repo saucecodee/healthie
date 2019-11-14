@@ -14,15 +14,19 @@ class AppointmentService {
   async bookAppointment(data) {
     const appointment = new Appointment(data)
 
+    let user = await User.findOne({ _id: data.user });
+    if (!user) throw new CustomError("Invalid user id");
+
+    let doctor = await Doctor.findOne({ _id: data.doctor });
+    if (!doctor) throw new CustomError("Invalid doctor id");
+
     await appointment.save()
 
     //Adding appointment id to user's appointments array
-    let user = await User.findOne({ _id: data.user })
     user.appointments.push(appointment._id);
     await User.findOneAndUpdate({ _id: user._id }, user);
 
     //Adding appointment id to doctor's appointments array
-    let doctor = await Doctor.findOne({ _id: data.doctor })
     doctor.appointments.push(appointment._id);
     await Doctor.findOneAndUpdate({ _id: doctor._id }, doctor);
 
