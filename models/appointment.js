@@ -5,10 +5,12 @@ const AppointmentSchema = new Schema(
      {
           doctor: {
                type: mongoose.Schema.Types.ObjectId,
+               ref: "Doctors",
                required: [true, "doctor's id is required"]
           },
           user: {
                type: mongoose.Schema.Types.ObjectId,
+               ref: "Users",
                required: [true, "user's id is required"]
           },
           duration: {
