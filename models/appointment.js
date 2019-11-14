@@ -25,8 +25,16 @@ const AppointmentSchema = new Schema(
                default: 'pending',
                lowercase: true,
                trim: true,
-          }
-
+          },
+          date: {
+               type: Date,
+          },
+          symptoms: [
+               {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "Symptoms",
+               },
+          ]
      },
      {
           timestamps: true
