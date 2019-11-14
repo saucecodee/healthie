@@ -25,8 +25,8 @@ class DoctorContoller {
   }
 
   async getDoctors(req, res, next) {
-    let data = await getDoctors();
-    res.status(200).send(response('All Doctors', data));
+    let data = await getDoctors(req.query);
+    res.status(200).send(response((data.length ? "" : "No") + ' Doctors found', data));
   }
 
   async editDoctor(req, res, next) {
