@@ -31,7 +31,22 @@ class DoctorsService {
   }
 
   async getDoctors() {
-    const doctors = await Doctor.find({});
+    page = page || 1;
+    limit = limit || 20;
+    limit = limit > 100 ? 100 : limit;
+    c = c || "name"
+    q = q || "";
+
+    limit = parseInt(limit);
+    page = parseInt(page);
+
+    const filter = {};
+    filter[c] = { $regex: q, $options: 'i' };
+
+    const doctors = await Doctor
+      .find(filter)
+      .skip(page * limit - limit)
+      .limit(limit)
 
     return doctors;
   }
