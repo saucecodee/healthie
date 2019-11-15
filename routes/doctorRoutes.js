@@ -4,6 +4,7 @@ const {
   signinDoctor,
   getDoctors,
   getDoctor,
+  getDoctorAppointments,
   editDoctor,
   deleteDoctor,
 } = require('../controllers/doctorController');
@@ -14,6 +15,7 @@ module.exports = function () {
   router.post('/signin', signinDoctor);
   router.get('/', getDoctors);
   router.get('/:doctorId', getDoctor);
+  router.get("/:doctorId/appointments", getDoctorAppointments)
   router.put('/:doctorId', isDoctor, editDoctor);
   router.delete('/:doctorId', isDoctor, deleteDoctor);
 

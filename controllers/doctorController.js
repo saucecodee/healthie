@@ -2,6 +2,7 @@ const {
   signupDoctor,
   signinDoctor,
   getDoctor,
+  getDoctorAppointments,
   getDoctors,
   editDoctor,
   deleteDoctor,
@@ -22,6 +23,11 @@ class DoctorContoller {
   async getDoctor(req, res, next) {
     let data = await getDoctor(req.params.doctorId);
     res.status(200).send(response('Found', data));
+  }
+
+  async getDoctorAppointments(req, res, next) {
+    const doctorAppointments = await getDoctorAppointments(req.params.doctorId);
+    res.status(200).send(response(`Doctor's appointments`, doctorAppointments));
   }
 
   async getDoctors(req, res, next) {
