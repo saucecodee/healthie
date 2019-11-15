@@ -17,7 +17,7 @@ class UsersService {
 
     await user.save();
 
-    return token;
+    return { token, user };
   }
 
   async signinUser(data) {
@@ -37,13 +37,30 @@ class UsersService {
     return { token, user };
   }
 
-  async getUsers() {
-    return await User.find({});
+  async getUsers({ q, c, page, limit }) {
+    page = page || 1;
+    limit = limit || 20;
+    limit = limit > 100 ? 100 : limit;
+    c = c || "name"
+    q = q || "";
+
+    limit = parseInt(limit);
+    page = parseInt(page);
+
+    const filter = {};
+    filter[c] = { $regex: q, $options: 'i' };
+
+    const users = await User
+      .find(filter)
+      .skip(page * limit - limit)
+      .limit(limit)
+
+    return users
   }
 
   async getUser(userId) {
     const user = await User.findOne({ _id: userId });
-
+    if (!user) throw CustomError("User not found", 404);
     return user;
   }
 
@@ -53,7 +70,7 @@ class UsersService {
     let appointments = user.appointments;
 
     for (let i = 0; i < appointments.length; i++) {
-      appointments[i].doctor = await Doctor.findOne({_id: appointments[i].doctor})
+      appointments[i].doctor = await Doctor.findOne({ _id: appointments[i].doctor })
     }
     return appointments;
   }
