@@ -24,6 +24,10 @@ const DoctorSchema = new Schema(
       type: String,
       required: [true, "address is required"],
     },
+    hospital: {
+      type: String,
+      required: [true, "hospital is required"]
+    },
     specialty: {
       id: {
         type: Schema.Types.ObjectId,
@@ -65,7 +69,7 @@ const DoctorSchema = new Schema(
   }
 );
 
-DoctorSchema.pre("save", async function(next) {
+DoctorSchema.pre("save", async function (next) {
   try {
     const saltRounds = 10;
     let hash = await bcrypt.hash(this.password, saltRounds);
